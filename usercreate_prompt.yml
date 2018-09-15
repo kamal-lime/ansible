@@ -1,0 +1,90 @@
+create ssh user in remote linux servers with user/password/auth_key promt
+
+#######
+# Create user
+- hosts: "serverip or instance tag"
+
+
+  vars_prompt:
+    - name: "SSH_USER"
+      prompt: "User name for server"
+#    - name: "SSH_USER_PASSWORD"
+#      prompt: "Password for ssh user"
+#      private: yes
+#      encrypt: "sha512_crypt"
+#      confirm: yes
+#      no_log: true
+    - name: "AUTH_KEY"
+      prompt: "user auth key"
+  remote_user: ubuntu
+  sudo:        yes
+  tasks:
+    - name: "Create ssh user"
+      user: name={{ SSH_USER }}
+            shell=/bin/bash
+            groups=
+    - name: "Add remote authorized key"
+      authorized_key: user={{ SSH_USER }} key={{ AUTH_KEY }}
+      
+      
+  ######
+  
+  in above example ansible prompt you to input username that u want to create on server.
+  above yml is example of keybased ssh user, it will prompt to input the users ssh public key
+  
+  - 1. if you want to create user with password than uncomment the 
+  
+  #    - name: "SSH_USER_PASSWORD"
+#      prompt: "Password for ssh user"
+#      private: yes
+#      encrypt: "sha512_crypt"
+#      confirm: yes
+#      no_log: true
+
+
+2. and comment the belwo lines
+
+- name: "AUTH_KEY"
+      prompt: "user auth key"
+      
+ - name: "Add remote authorized key"
+      authorized_key: user={{ SSH_USER }} key={{ AUTH_KEY }}
+      
+ 3.put the below line in tasks section below user name
+ 
+ password={{ ANSIBLE_USER_PASSWORD }}
+ 
+ Now password based user generation yml looks like
+ 
+#######
+# Create user
+- hosts: "serverip or instance tag"
+
+
+  vars_prompt:
+    - name: "SSH_USER"
+      prompt: "User name for server"
+    - name: "SSH_USER_PASSWORD"
+      prompt: "Password for ssh user"
+      private: yes
+      encrypt: "sha512_crypt"
+      confirm: yes
+      no_log: true
+  #  - name: "AUTH_KEY"
+  #    prompt: "user auth key"
+  remote_user: ubuntu
+  sudo:        yes
+  tasks:
+    - name: "Create ssh user"
+      user: name={{ SSH_USER }}
+            password={{ SSH_USER_PASSWORD }}
+            shell=/bin/bash
+            groups=
+#    - name: "Add remote authorized key"
+#      authorized_key: user={{ SSH_USER }} key={{ AUTH_KEY }}
+      
+      
+  ######
+
+      
+ 
