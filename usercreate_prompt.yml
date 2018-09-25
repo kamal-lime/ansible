@@ -26,6 +26,13 @@ create ssh user in remote linux servers with user/password/auth_key promt
     - name: "Add remote authorized key"
       authorized_key: user={{ SSH_USER }} key={{ AUTH_KEY }}
       
+    - name: Allow sudo privilages
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        line: '{{ Name }} ALL=(ALL) NOPASSWD:ALL'
+        validate: 'visudo -cf %s'
+      
       
   ######
   
