@@ -1,0 +1,12 @@
+---
+- hosts: 127.0.0.1
+  user: ubuntu
+  become: true
+
+  tasks:
+  - lineinfile:
+      path: /etc/sudoers
+      state: present
+      regexp: '^%admin ALL='
+      line: '%admin ALL=(ALL) NOPASSWD: ALL'
+      validate: '/usr/sbin/visudo -cf %s'
