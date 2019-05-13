@@ -1,0 +1,30 @@
+---
+- hosts: 127.0.0.1
+  sudo: yes
+  user: ubuntu
+  tasks:
+     - name: "Create ssh user"
+       user:
+         name: kamal
+         shell: /bin/bash
+         createhome: yes
+         generate_ssh_key: yes
+         group: admin
+         state: present
+
+- include: kamal_keys.yml
+
+
+
+#### create a file - kamal_keys.yml
+
+---
+- hosts: 127.0.0.1
+  sudo: yes
+  user: ubuntu
+  tasks:
+    - name: "Create ssh user"
+      authorized_key:
+        user: kamal
+        state: present
+        key: ssh-keys
