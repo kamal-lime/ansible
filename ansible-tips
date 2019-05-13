@@ -1,0 +1,24 @@
+## create grouped hosts file 
+vim stage
+[stage]
+192.168.32.34
+192.168.23.45
+
+save
+
+if you face python version issue on remote machine
+
+[stage]
+192.168.32.34 ansible_python_interpreter=/usr/bin/python3
+
+save
+
+you can define user and keys in hosts
+
+[stage]
+192.168.32.34 ansible_user=test1 ansible_ssh_private_key_file=/home/user/test.pem
+
+
+# how to define custom host inventory file n ansible command
+
+ansible -i inventoiry_file_name -m ping
