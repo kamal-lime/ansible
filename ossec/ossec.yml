@@ -25,6 +25,6 @@
       shell: /var/ossec/bin/agent-auth -m 10.3.11.104 -A $HOSTNAME -p 1515
     - name: restart ossec
       service:
-        name: ossec-hids
+        name: ossec
         state: restarted
       
