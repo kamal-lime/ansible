@@ -12,7 +12,9 @@
 #    - name: install atomic
 #      shell: /tmp/atomic
     - name: remove ols ossec
-      shell: rm -f /var/ossec/etc/ossec.conf
+      file:
+        state: absent
+        path: "/var/ossec/etc/ossec.conf"
   #  - name: instaall ossec
    #   apt:
    #     name: ossec-hids-agent
