@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "2.2",
+  "description": "Command Document Example JSON Template",
+  "parameters": {
+    "Message": {
+      "type": "String",
+      "description": "Example",
+      "default": "newrelic install amazon linux"
+    }
+  },
+  "mainSteps": [
+    {
+      "action": "aws:runShellScript",
+      "name": "ossec",
+      "inputs": {
+        "runCommand": [
+          "echo 'license_key: xxxxxxxxxxxx' | sudo tee -a /etc/newrelic-infra.yml",
+          "sudo curl -o /etc/yum.repos.d/newrelic-infra.repo https://download.newrelic.com/infrastructure_agent/linux/yum/el/7/x86_64/newrelic-infra.repo",
+          "sudo yum install newrelic-infra -y"
+        ]
+      }
+    }
+  ]
+}
+
+############## ossec
+
+{
+  "schemaVersion": "2.2",
+  "description": "Command Document Example JSON Template",
+  "parameters": {
+    "Message": {
+      "type": "String",
+      "description": "Example",
+      "default": "ossec install"
+    }
+  },
+  "mainSteps": [
+    {
+      "action": "aws:runShellScript",
+      "name": "ossec",
+      "inputs": {
+        "runCommand": [
+          "curl https://s3bucket/ossec-agent/atomic --output atomic",
+          "sudo bash atomic",
+          "sudo yum install ossec-hids-agent -y",
+          "curl https://s3bucket/ossec-agent/ossec-agent.conf --output /var/ossec/etc/ossec-agent.conf",
+          "/var/ossec/bin/agent-auth -m ossec0server -A $HOSTNAME -p 1515",
+          "sleep 5",
+          "service ossec-hids restart"
+        ]
+      }
+    }
+  ]
+}
